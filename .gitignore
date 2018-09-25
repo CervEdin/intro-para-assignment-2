@@ -12,3 +12,6 @@
 
 # Ignore binary folder
 bin/
+
+# Unignore Makefile
+!Makefile
