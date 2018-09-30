@@ -4,8 +4,12 @@ CXXFLAGS = -std=c++11 -Wall -pthread
 all: test
 
 1:
-	$(CXX) $(CXXFLAGS) 1-integration.cpp -o bin/1-integration
-
+	$(CXX) $(CXXFLAGS) 1-integration.cpp -o 1-integration
+	for T in 1 2 4 6 8 10 12 14 16; do \
+		for N in 1 10 100 1000 10000 100000 1000000; do \
+			./1-integration $$T $$N ; \
+		done \
+	done
 2:
 	$(CXX) $(CXXFLAGS) 2-sieve.cpp -o bin/2-sieve
 
@@ -29,8 +33,8 @@ test-3: 3
 test-4: 4
 	./bin/bench 1
 
-crash: 4	
-	./bin/bench 2	
+crash: 4
+	./bin/bench 2
 
 clean:
 	$(RM) *.o

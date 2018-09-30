@@ -61,13 +61,6 @@ double trapezoidal(double a, double b, int n)
     sum += 2*f(x);
   }
   sum = (b-a)*sum/(2*n);
-  if(n < 5)
-  {
-    for(int i = 0; i < n; i++)
-    {
-      std::cout << "w: " << points[i] << std::endl;
-    }
-  }
   return sum;
 }
 
@@ -75,7 +68,7 @@ void usage(char *program)
 {
 	std::cout << "Usage: " << program << " T Trapz" << std::endl;
 	std::cout << std::endl;
-	std::cout << "  w: Display help" << std::endl;
+	std::cout << "  -h: Display help" << std::endl;
 	std::cout << "  T: Nr of Threads" << std::endl;
 	std::cout << "  Trapz: Nr of Trapezes" << std::endl;
 	exit(1);
@@ -83,7 +76,8 @@ void usage(char *program)
 
 int main(int argc, char *argv[])
 {
-	if (argc != 3)
+  std::string help = argv[1];
+	if (!help.compare("-h") || argc != 3)
 	{
 //		std::cout << "Arg1 " << argv[1]
 //		std::cout << "Arg2 " << argv[2]
@@ -99,7 +93,7 @@ int main(int argc, char *argv[])
 	int n_per_thread = n/T;
 	// Remainder if there is not equal division of work
 	int n_remainder = n%T;
-	// Trapezoid widtw
+	// Trapezoid width
 	double w = 1.0/n;
 	// Where each thread should start computing the area
 	double start = 0;
@@ -126,13 +120,12 @@ int main(int argc, char *argv[])
   }
 	std::chrono::duration<double> duration = std::chrono::system_clock::now() - start_time;
 
-  std::cout << "Parallel solution finished in "  << duration.count()*1000 << "ms. Threads = " << T << std::endl;
-  std::cout << "The area is " << area << " with n=" << n << " trapezoids." << std::endl;
+	std::cout << "N = " << n << " T = " << T << std::endl;
+  std::cout << "Parallel solution finished in "  << duration.count()*1000 << "ms. Area = " << area << std::endl;
 
-	start_time = std::chrono::system_clock::now();
-  double seq_trap = trapezoidal(0, 1, n);
-	duration = std::chrono::system_clock::now() - start_time;
-	
-	std::cout << "Sequential solution finished in " << duration.count()*1000 << "ms." << std::endl;
-	std::cout << "The area is " << seq_trap << " with the sequential solution."<< std::endl;
+	//start_time = std::chrono::system_clock::now();
+  //double seq_trap = trapezoidal(0, 1, n);
+	//duration = std::chrono::system_clock::now() - start_time;
+
+	//std::cout << "Sequential solution finished in " << duration.count()*1000 << "ms. Area = " << seq_trap << std::endl;
 }
