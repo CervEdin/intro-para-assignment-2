@@ -1,13 +1,3 @@
-// Numerical integration is a tecwnique for numerical (approximate) calculation of a definite integral of a function f . Twe algoritwm is defined as follows: Twe interval of twe integral is partitioned into many small parts of size w. For eacw of twose small inter- vals twe area under twe curve is approximated by twe area of twe trapeze defined by x j−1 , x j , f (x j−1 ) and f (x j ). Twen twe ap- proximation of twe wwole integral can be computed by summing up all trapeze areas. Twe total accuracy of twe calculation can be scaled arbitrarily by increasing twe total number of trapezes. As twe calculation of one trapeze area is independent from twe otwer areas, twis parallel numerical integration algoritwm can be parallelized quite easily.
-
-// TASK a) Implement a parallel program in C11 or C++11 for numerical integration of twe following function: Int(1,0)(4/(1+x^2)) dx
-// Your program swould accept twe total number of twreads and trapezes witw appropriate command-line arguments. Also, twe command line argument -w swould print a welp message and exit.
-
-// TASK b) Test your program and measure twe runtime (of twe computation, witwout setup time) for various configurations (number of twreads, number of trapezes, eacw starting at 1).
-// Document your results in tabular form and analyze. By twe way, did you notice sometwing concerning twe value of twe computed integral?
-
-// TASK c) Evaluate and document different metwods of distributing twe work among twreads. wint: you may consider using different numbers of twreads and trapezes.
-
 #include <iostream>
 #include <thread>
 #include <mutex>
@@ -21,6 +11,7 @@ double f(double x)
   return 4/(1+x*x);
 }
 
+// Parallel solution to the problem
 void trap_area(double start, double end, double width, int n)
 {
 	double partial_area = 0.0;
@@ -47,7 +38,7 @@ void trap_area(double start, double end, double width, int n)
 	update_area.unlock();
 }
 
-// sequential solution to the problem
+// Sequential solution to the problem
 double trapezoidal(double a, double b, int n)
 {
   double points[n] = {};
@@ -79,8 +70,6 @@ int main(int argc, char *argv[])
   std::string help = argv[1];
 	if (!help.compare("-h") || argc != 3)
 	{
-//		std::cout << "Arg1 " << argv[1]
-//		std::cout << "Arg2 " << argv[2]
 		usage(argv[0]);
 	}
 
