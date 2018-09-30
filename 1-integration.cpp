@@ -19,7 +19,6 @@ void trap_area(double start, double end, double width, int n)
 	double b = start + width;
 
 	while(a < end){
-		// ((a+b)/2)*h
 		double triangle_h = std::abs(f(a)-f(b));
 		double triangle_area = (triangle_h * width)/2;
 		double rectangle_area = 0;
@@ -109,8 +108,9 @@ int main(int argc, char *argv[])
   }
 	std::chrono::duration<double> duration = std::chrono::system_clock::now() - start_time;
 
-	std::cout << "N = " << n << " T = " << T << std::endl;
-  std::cout << "Parallel solution finished in "  << duration.count()*1000 << "ms. Area = " << area << std::endl;
+	//std::cout << "N = " << n << " T = " << T << std::endl;
+  //std::cout << "Parallel solution finished in "  << duration.count()*1000 << "ms. Area = " << area << std::endl;
+  std::cout << " & " << duration.count()*1000 << "ms. area=" << area << " " << std::endl;
 
 	//start_time = std::chrono::system_clock::now();
   //double seq_trap = trapezoidal(0, 1, n);

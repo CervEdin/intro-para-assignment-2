@@ -5,8 +5,9 @@ all: test
 
 1:
 	$(CXX) $(CXXFLAGS) 1-integration.cpp -o 1-integration
-	for T in 1 2 4 6 8 10 12 14 16; do \
-		for N in 1 10 100 1000 10000 100000 1000000; do \
+	for N in 1 10 100 1000 10000 100000 1000000; do \
+		for T in 1 2 4 8 16; do \
+			echo "\n t=$$T" ; \
 			./1-integration $$T $$N ; \
 		done \
 	done
