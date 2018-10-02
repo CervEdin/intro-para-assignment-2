@@ -41,4 +41,24 @@ int main(int argc, char *argv[])
 	{
 		usage(argv[0]);
 	}
+	int upper_bound;
+	try
+	{
+		upper_bound = std::stoi(argv[1]);
+	}
+	catch (std::exception)
+	{
+		usage(argv[0]);
+	}
+	int threads;
+	try
+	{
+		threads = std::stoi(argv[2]);
+	}
+	catch (std::exception)
+	{
+		usage(argv[0]);
+	}
+
+	return 0;
 }
