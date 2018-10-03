@@ -25,6 +25,7 @@
 
 #include <iostream>
 #include <thread>
+#include <cmath>
 
 void sequential_sieve(int natural_numbers[], int k, int max)
 {
@@ -89,13 +90,15 @@ int main(int argc, char *argv[])
 	{
 		natural_numbers[i] = j;
 	}
+	
 	if (threads == 1) {
 		sequential_sieve(natural_numbers, 2, max);
-	}
-	else {
+	} 
+	else 
+	{
+		double sqrt_max = sqrt(max);
 		for (int i=0; i<threads; i++)
 		{
-			double sqrt_max;
 
 		}
 	}
