@@ -29,10 +29,9 @@
 
 void sequential_sieve(int natural_numbers[], int k, int max)
 {
-	// int k_index = k - 1;
 	int k_squared = k*k;
 	// repeat until k^2 is greater than max
-	while (k_squared < max) {
+	while (k_squared <= max) {
 		// Mark all multiples of k between k^2 and Max
 		for (int i = k_squared - 1; i < max; i += k)
 		{
@@ -44,6 +43,34 @@ void sequential_sieve(int natural_numbers[], int k, int max)
 		}
 		k = natural_numbers[k];
 		k_squared = k*k;
+	}
+}
+
+void mark(int unmarked[], int thread, int lower_sqrt_max, int start, int end)
+{
+	// Find the next k
+	int k = 1;
+	int k_squared = 1;
+
+	while (k <= lower_sqrt_max)  {
+
+		// Find the next prime in the range 1..sqrt(max)
+		while (unmarked[k-1] == 0) {
+			k++;
+		}
+		k_squared = k*k;
+
+		// Find the first multiple of k in the range start..end
+		int first_multiple = ((start + 1) <= k) ? (2*k) - 1 : start;
+		while ((first_multiple + 1) % k && first_multiple <= end) {
+			first_multiple++;
+		}
+		
+		for (int i = first_multiple; i <= end ; i += k)
+		{
+			unmarked[i] = 0;
+		}
+		k++;
 	}
 }
 
@@ -83,23 +110,43 @@ int main(int argc, char *argv[])
 		usage(argv[0]);
 	}
 
-
 	// 1. Create a list of natural numbers: 1, 2, 3, ... , Max.
 	int natural_numbers[max];
 	for (int i = 0, j = 1; i < max; i++, j++) 
 	{
 		natural_numbers[i] = j;
 	}
-	
+
+	// Mark 1 as not prime
+	natural_numbers[0] = 0;
+
 	if (threads == 1) {
 		sequential_sieve(natural_numbers, 2, max);
 	} 
 	else 
 	{
 		double sqrt_max = sqrt(max);
-		for (int i=0; i<threads; i++)
-		{
+		int lower_sqrt_max = (int)sqrt_max;
+		// 1. First sequentially compute primes up to √Max.
+		sequential_sieve(natural_numbers, 2, lower_sqrt_max);
 
+		int nr_not_marked = max - lower_sqrt_max;
+		int chunk_size = nr_not_marked / threads;
+		// Make chunks even
+		// chunk_size = chunk_size + (chunk_size % 2);
+		int remainder = nr_not_marked - (chunk_size * threads);
+
+		// This part of the array is processed
+		int start = 0;
+		int end = lower_sqrt_max - 1;
+		for (int thread = 0; thread < threads; thread++)
+		{
+			start = end + 1;
+			end = start + chunk_size - 1;
+			end = (thread + 1 == threads && remainder != 0) ? 
+				end + remainder:
+				end;
+			mark(natural_numbers, thread, lower_sqrt_max, start, end);
 		}
 	}
 
@@ -107,6 +154,15 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < max; i++)
 	{
 		nr_primes += natural_numbers[i] ? 1 : 0;
+	}
+	int primes[nr_primes];
+	for (int i = 0, j = 0; i < max; i++)
+	{
+		if (natural_numbers[i] != 0) 
+		{
+			primes[j] = natural_numbers[i];
+			j++;
+		}
 	}
 
     std::cout << "There were " << nr_primes << " primes." << std::endl;
