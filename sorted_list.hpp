@@ -5,6 +5,10 @@
  * please report bugs or suggest improvements to david.klaftenegger@it.uu.se
  */
 
+#include <thread>
+#include <mutex>
+#include <atomic>
+
 /* struct for list nodes */
 template<typename T>
 struct node {
