@@ -8,7 +8,7 @@ double sum = 0.0;
 
 double f(double x)
 {
-  return 4/(1+x*x);
+	return 4/(1+x*x);
 }
 
 // Parallel solution to the problem
@@ -40,18 +40,18 @@ void trap_area(double start, double end, double width, int n)
 // Sequential solution to the problem
 double trapezoidal(double a, double b, int n)
 {
-  double points[n] = {};
-  double w = (b-a)/n;
-  double x = a;
-  sum = f(a);
+	double points[n] = {};
+	double w = (b-a)/n;
+	double x = a;
+	sum = f(a);
 
-  for(int i = 0; i < n; i++){
-    x = x + w;
-    points[i] = x;
-    sum += 2*f(x);
-  }
-  sum = (b-a)*sum/(2*n);
-  return sum;
+	for(int i = 0; i < n; i++){
+		x = x + w;
+		points[i] = x;
+		sum += 2*f(x);
+	}
+	sum = (b-a)*sum/(2*n);
+	return sum;
 }
 
 void usage(char *program)
@@ -66,16 +66,16 @@ void usage(char *program)
 
 int main(int argc, char *argv[])
 {
-  std::string help = argv[1];
+	std::string help = argv[1];
 	if (!help.compare("-h") || argc != 3)
 	{
 		usage(argv[0]);
 	}
 
 	// Number of threads
-  int T = std::stoi(argv[1]);
+	int T = std::stoi(argv[1]);
 	// Number of trapezoids
-  int n = std::stoi(argv[2]);
+	int n = std::stoi(argv[2]);
 
 	// Trapsezoid to calculate for each thread
 	int n_per_thread = n/T;
@@ -104,13 +104,13 @@ int main(int argc, char *argv[])
 	}
 
 	for(int i=0; i<T; i++){
-    ta[i].join();
-  }
+		ta[i].join();
+	}
 	std::chrono::duration<double> duration = std::chrono::system_clock::now() - start_time;
 
 	//std::cout << "N = " << n << " T = " << T << std::endl;
   //std::cout << "Parallel solution finished in "  << duration.count()*1000 << "ms. Area = " << area << std::endl;
-  std::cout << " & " << duration.count()*1000 << "ms. area=" << area << " " << std::endl;
+	std::cout << " & " << duration.count()*1000 << "ms. area=" << area << " " << std::endl;
 
 	//start_time = std::chrono::system_clock::now();
   //double seq_trap = trapezoidal(0, 1, n);
