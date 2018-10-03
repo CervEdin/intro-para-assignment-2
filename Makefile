@@ -35,7 +35,7 @@ test-4: 4
 	./bin/bench 1
 
 debug-2: 2
-	gdb --args ./bin/2-sieve 2 100
+	gdb --args ./bin/2-sieve 8 2000000000
 
 crash: 4
 	./bin/bench 2
