@@ -28,7 +28,7 @@
 #include <cmath>
 #include <vector>
 
-void sequential_sieve(std::vector<int> natural_numbers, int k, int max)
+void sequential_sieve(std::vector<int> &natural_numbers, int k, int max)
 {
 	int k_squared = k*k;
 	// repeat until k^2 is greater than max
@@ -47,7 +47,7 @@ void sequential_sieve(std::vector<int> natural_numbers, int k, int max)
 	}
 }
 
-void mark(std::vector<int> unmarked, int lower_sqrt_max, int start, int end)
+void mark(std::vector<int> &unmarked, int lower_sqrt_max, int start, int end)
 {
 	// Find the next k
 	int k = 1;
@@ -151,32 +151,19 @@ int main(int argc, char *argv[])
 			end = (thread + 1 == threads && remainder != 0) ? 
 				end + remainder:
 				end;
-
-			// mark(natural_numbers, lower_sqrt_max, start, end);
-			sieves[thread] = std::thread(mark, natural_numbers, lower_sqrt_max, start, end);
+			sieves[thread] = std::thread(mark, std::ref(natural_numbers), lower_sqrt_max, start, end);
 		}
 		
 		for (int thread = 0; thread < threads; thread++)
 		{
 			sieves[thread].join();
 		}
-		// sieves[0].join();
-		delete[] sieves;
 	}
 
 	int nr_primes = 0;
 	for (int i = 0; i < max; i++)
 	{
 		nr_primes += natural_numbers[i] ? 1 : 0;
-	}
-	int primes[nr_primes];
-	for (int i = 0, j = 0; i < max; i++)
-	{
-		if (natural_numbers[i] != 0) 
-		{
-			primes[j] = natural_numbers[i];
-			j++;
-		}
 	}
 
     std::cout << "There were " << nr_primes << " primes." << std::endl;
