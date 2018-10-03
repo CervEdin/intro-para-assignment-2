@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -pthread
+CXXFLAGS = -std=c++11 -Wall -pthread -g
 
 all: test
 
@@ -26,13 +26,16 @@ test-1: 1
 	./bin/1-integration 1 1
 
 test-2: 2
-	./bin/2-sieve 1 10
+	./bin/2-sieve 1 100
 
 test-3: 3
 	./bin/3-mutex
 
 test-4: 4
 	./bin/bench 1
+
+debug-2: 2
+	gdb --args ./bin/2-sieve 1 100
 
 crash: 4
 	./bin/bench 2
