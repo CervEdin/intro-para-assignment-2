@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
 	{
 		usage(argv[0]);
 	}
+	
 	int threads;
 	try
 	{
@@ -70,10 +71,11 @@ int main(int argc, char *argv[])
 	{
 		usage(argv[0]);
 	}
-	int upper_bound;
+
+	int max;
 	try
 	{
-		upper_bound = std::stoi(argv[2]);
+		max = std::stoi(argv[2]);
 	}
 	catch (std::exception)
 	{
@@ -82,23 +84,24 @@ int main(int argc, char *argv[])
 
 
 	// 1. Create a list of natural numbers: 1, 2, 3, ... , Max.
-	int natural_numbers[upper_bound];
-	for (int i = 0, j = 1; i < upper_bound; i++, j++) 
+	int natural_numbers[max];
+	for (int i = 0, j = 1; i < max; i++, j++) 
 	{
 		natural_numbers[i] = j;
 	}
 	if (threads == 1) {
-		sequential_sieve(natural_numbers, 2, upper_bound);
+		sequential_sieve(natural_numbers, 2, max);
 	}
 	else {
 		for (int i=0; i<threads; i++)
 		{
+			double sqrt_max;
 
 		}
 	}
 
 	int nr_primes = 0;
-	for (int i = 1; i < upper_bound; i++)
+	for (int i = 0; i < max; i++)
 	{
 		nr_primes += natural_numbers[i] ? 1 : 0;
 	}
