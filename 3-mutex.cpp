@@ -32,12 +32,12 @@ class Flaky {
 
 void test(Flaky flake)
 {
-  std::string temp = "flaky", test_string = "     ";
+  std::string temp = "flaky", empty(temp.size(), ' ');
   flake.lock();
   for(int i=0;i<temp.length();i++){
-    test_string[i] = temp[i];
+    empty[i] = temp[i];
   }
-  std::cout << test_string << std::endl;
+  std::cout << empty << std::endl;
   flake.unlock();
 }
 
