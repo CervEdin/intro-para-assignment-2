@@ -32,7 +32,16 @@ test-1: 1
 	./bin/1-integration 1 1
 
 test-2: 2
-	./bin/2-sieve 1 100
+	./bin/2-sieve 1 10000000
+	./bin/2-sieve 2 10000000
+	./bin/2-sieve 4 10000000
+	./bin/2-sieve 8 10000000
+	./bin/2-sieve 16 10000000
+	./bin/2-sieve 1 100000000
+	./bin/2-sieve 2 100000000
+	./bin/2-sieve 4 100000000
+	./bin/2-sieve 8 100000000
+	./bin/2-sieve 16 100000000
 
 test-3: 3
 	./bin/3-mutex
@@ -49,6 +58,7 @@ test-4-1: 4-1
 
 test-4-2: 4-2
 	./bin/bench-FGL 1
+	./bin/bench-FGL 2
 
 debug-2: 2
 	gdb --args ./bin/2-sieve 8 2000000000
