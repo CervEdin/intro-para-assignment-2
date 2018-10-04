@@ -24,6 +24,8 @@ all: test
 	$(CXX) $(CXXFLAGS) -fsanitize=thread -O3 benchmark_example_CGL.cpp -o bin/bench-CGL
 
 4-2:
+	$(CXX) $(CXXFLAGS) -O3 benchmark_example_FGL.cpp -o bin/bench-FGL
+4-2f:
 	$(CXX) $(CXXFLAGS) -fsanitize=thread -O3 benchmark_example_FGL.cpp -o bin/bench-FGL
 
 test: test-1 test-2 test-3 test-4-1
@@ -58,6 +60,12 @@ test-4-1: 4-1
 
 test-4-2: 4-2
 	./bin/bench-FGL 1
+	./bin/bench-FGL 2
+	./bin/bench-FGL 4
+	./bin/bench-FGL 8
+	./bin/bench-FGL 16
+
+test-4-2f: 4-2f
 	./bin/bench-FGL 2
 
 debug-2: 2

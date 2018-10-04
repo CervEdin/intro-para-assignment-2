@@ -50,20 +50,20 @@ class sorted_list {
 
 			/* first find position */
 			node<T>* pred = nullptr;
+			if (first != nullptr) {first->lock.lock();}
 			node<T>* succ = first;
-			while(succ != nullptr && succ->value < v) {
+			if (succ != nullptr && succ->next != nullptr) {
 				pred = succ;
-				succ = succ->next;
-			}
-			
-			if (pred != nullptr)
-			{
-				pred->lock.lock();
-			}
-			if (succ != nullptr)
-			{
+				succ = succ-> next;
 				succ->lock.lock();
 			}
+			while(succ != nullptr && succ->value < v) {
+				if (pred != nullptr) {pred->lock.unlock();}
+				pred = succ;
+				succ = succ->next;
+				if (succ != nullptr){succ->lock.lock();}
+			}
+			
 			/* insert new node between pred and succ */
 			current->next = succ;
 			if(pred == nullptr) {
@@ -71,27 +71,25 @@ class sorted_list {
 			} else {
 				pred->next = current;
 			}
-
-			if (pred != nullptr)
-			{
-				pred->lock.unlock();
-			}
-			if (succ != nullptr)
-			{
-				succ->lock.unlock();
-			}
+			if (pred != nullptr) {pred->lock.unlock();}
+			if (succ != nullptr){succ->lock.unlock();}
 		}
 
 		void remove(T v) {
 			/* first find position */
 			node<T>* pred = nullptr;
+			if (first != nullptr) {first->lock.lock();}
 			node<T>* current = first;
 			while(current != nullptr && current->value < v) {
+				if (pred != nullptr) {pred->lock.unlock();}
 				pred = current;
 				current = current->next;
+				if (current != nullptr){current->lock.lock();}
 			}
 			if(current == nullptr || current->value != v) {
 				/* v not found */
+				if (pred != nullptr) {pred->lock.unlock();}
+				if (current != nullptr){current->lock.unlock();}
 				return;
 			}
 			/* remove current */
@@ -100,6 +98,8 @@ class sorted_list {
 			} else {
 				pred->next = current->next;
 			}
+			if (pred != nullptr) {pred->lock.unlock();}
+			if (current != nullptr){current->lock.unlock();}
 			delete current;
 		}
 
