@@ -17,10 +17,13 @@ all: test
 3:
 	$(CXX) $(CXXFLAGS) 3-mutex.cpp -o bin/3-mutex
 
-4:
+4-0:
 	$(CXX) $(CXXFLAGS) -O3 benchmark_example.cpp -o bin/bench
 
-test: test-1 test-2 test-3 test-4
+4-1:
+	$(CXX) $(CXXFLAGS) -fsanitize=thread -O3 benchmark_example_CGL.cpp -o bin/bench-CGL
+
+test: test-1 test-2 test-3 test-4-1
 
 test-1: 1
 	./bin/1-integration 1 1
@@ -31,14 +34,18 @@ test-2: 2
 test-3: 3
 	./bin/3-mutex
 
-test-4: 4
+test-4-0: 4-0
 	./bin/bench 1
+
+test-4-1: 4-1
+	./bin/bench-CGL 1
+	./bin/bench-CGL 2
+	./bin/bench-CGL 4
+	./bin/bench-CGL 8
+	./bin/bench-CGL 16
 
 debug-2: 2
 	gdb --args ./bin/2-sieve 8 2000000000
-
-crash: 4
-	./bin/bench 2
 
 clean:
 	$(RM) *.o

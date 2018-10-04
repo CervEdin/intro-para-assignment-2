@@ -5,6 +5,11 @@
  * please report bugs or suggest improvements to david.klaftenegger@it.uu.se
  */
 
+#include <thread>
+#include <mutex>
+#include <iostream>
+
+
 /* struct for list nodes */
 template<typename T>
 struct node {
@@ -16,6 +21,7 @@ struct node {
 template<typename T>
 class sorted_list {
 	node<T>* first = nullptr;
+	std::mutex lock;
 
 	public:
 		/* default implementations:
@@ -40,10 +46,7 @@ class sorted_list {
 		}
 		/* insert v into the list */
 		void insert(T v) {
-			/* construct new node */
-			node<T>* current = new node<T>();
-			current->value = v;
-
+			lock.lock(); // Lock while traversing and writing to list
 			/* first find position */
 			node<T>* pred = nullptr;
 			node<T>* succ = first;
@@ -52,6 +55,10 @@ class sorted_list {
 				succ = succ->next;
 			}
 
+			/* construct new node */
+			node<T>* current = new node<T>();
+			current->value = v;
+
 			/* insert new node between pred and succ */
 			current->next = succ;
 			if(pred == nullptr) {
@@ -59,9 +66,11 @@ class sorted_list {
 			} else {
 				pred->next = current;
 			}
+			lock.unlock(); // Done, unlock
 		}
 
 		void remove(T v) {
+			lock.lock(); // Lock while removing from list
 			/* first find position */
 			node<T>* pred = nullptr;
 			node<T>* current = first;
@@ -71,6 +80,7 @@ class sorted_list {
 			}
 			if(current == nullptr || current->value != v) {
 				/* v not found */
+				lock.unlock(); // Returning, unlock
 				return;
 			}
 			/* remove current */
@@ -80,10 +90,12 @@ class sorted_list {
 				pred->next = current->next;
 			}
 			delete current;
+			lock.unlock(); // Done, unlock
 		}
 
 		/* count elements with value v in the list */
 		std::size_t count(T v) {
+			lock.lock(); // Lock while counting
 			std::size_t cnt = 0;
 			/* first go to value v */
 			node<T>* current = first;
@@ -95,6 +107,7 @@ class sorted_list {
 				cnt++;
 				current = current->next;
 			}
+			lock.unlock(); // Done, unlock
 			return cnt;
 		}
 };
