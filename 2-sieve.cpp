@@ -51,7 +51,6 @@ void mark(std::vector<int> &unmarked, int lower_sqrt_max, int start, int end)
 {
 	// Find the next k
 	int k = 1;
-	int k_squared = 1;
 
 	while (k <= lower_sqrt_max)  {
 
@@ -59,7 +58,6 @@ void mark(std::vector<int> &unmarked, int lower_sqrt_max, int start, int end)
 		while (unmarked[k-1] == 0) {
 			k++;
 		}
-		k_squared = k*k;
 
 		// Find the first multiple of k in the range start..end
 		int first_multiple = ((start + 1) <= k) ? (2*k) - 1 : start;
