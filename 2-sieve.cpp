@@ -122,6 +122,8 @@ int main(int argc, char *argv[])
 
 	// Mark 1 as not prime
 	natural_numbers[0] = 0;
+	auto start_time;
+	std::chrono::duration<double> duration
 
 	if (threads == 1) {
 		sequential_sieve(natural_numbers, 2, max);
@@ -144,6 +146,7 @@ int main(int argc, char *argv[])
 		int end = lower_sqrt_max - 1;
 
 		std::thread *sieves = new std::thread[threads];
+		start_time = std::chrono::system_clock::now()
 		for (int thread = 0; thread < threads; thread++)
 		{
 			start = end + 1;
@@ -158,6 +161,7 @@ int main(int argc, char *argv[])
 		{
 			sieves[thread].join();
 		}
+		duration = std::chrono::system_clock::now() - start_time;
 	}
 
 	int nr_primes = 0;
@@ -166,7 +170,9 @@ int main(int argc, char *argv[])
 		nr_primes += natural_numbers[i] ? 1 : 0;
 	}
 
-    std::cout << "There were " << nr_primes << " primes." << std::endl;
+    //std::cout << "There were " << nr_primes << " primes." << std::endl;
+    std::cout << " & " << threads << " threads." << std::endl;
+    std::cout << " & " << duration.count()*1000 << " ms." << std::endl;
 
 	return 0;
 }
