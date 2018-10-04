@@ -5,9 +5,13 @@
  * please report bugs or suggest improvements to david.klaftenegger@it.uu.se
  */
 
+#include <mutex>
+#include <iostream>
+
 /* struct for list nodes */
 template<typename T>
 struct node {
+	std::mutex lock;
 	T value;
 	node<T>* next;
 };
