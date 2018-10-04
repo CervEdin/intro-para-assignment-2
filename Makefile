@@ -23,6 +23,9 @@ all: test
 4-1:
 	$(CXX) $(CXXFLAGS) -fsanitize=thread -O3 benchmark_example_CGL.cpp -o bin/bench-CGL
 
+4-2:
+	$(CXX) $(CXXFLAGS) -fsanitize=thread -O3 benchmark_example_FGL.cpp -o bin/bench-FGL
+
 test: test-1 test-2 test-3 test-4-1
 
 test-1: 1
@@ -43,6 +46,9 @@ test-4-1: 4-1
 	./bin/bench-CGL 4
 	./bin/bench-CGL 8
 	./bin/bench-CGL 16
+
+test-4-2: 4-2
+	./bin/bench-FGL 1
 
 debug-2: 2
 	gdb --args ./bin/2-sieve 8 2000000000
