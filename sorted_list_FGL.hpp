@@ -55,13 +55,30 @@ class sorted_list {
 				pred = succ;
 				succ = succ->next;
 			}
-
+			
+			if (pred != nullptr)
+			{
+				pred->lock.lock();
+			}
+			if (succ != nullptr)
+			{
+				succ->lock.lock();
+			}
 			/* insert new node between pred and succ */
 			current->next = succ;
 			if(pred == nullptr) {
 				first = current;
 			} else {
 				pred->next = current;
+			}
+
+			if (pred != nullptr)
+			{
+				pred->lock.unlock();
+			}
+			if (succ != nullptr)
+			{
+				succ->lock.unlock();
 			}
 		}
 
