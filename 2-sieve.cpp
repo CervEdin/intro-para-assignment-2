@@ -122,14 +122,12 @@ int main(int argc, char *argv[])
 
 	// Mark 1 as not prime
 	natural_numbers[0] = 0;
-	auto start_time;
-	std::chrono::duration<double> duration
 
-	if (threads == 1) {
-		sequential_sieve(natural_numbers, 2, max);
-	} 
-	else 
-	{
+	// if (threads == 1) {
+	// 	sequential_sieve(natural_numbers, 2, max);
+	// } 
+	// else 
+	// {
 		double sqrt_max = sqrt(max);
 		int lower_sqrt_max = (int)sqrt_max;
 		// 1. First sequentially compute primes up to √Max.
@@ -146,7 +144,7 @@ int main(int argc, char *argv[])
 		int end = lower_sqrt_max - 1;
 
 		std::thread *sieves = new std::thread[threads];
-		start_time = std::chrono::system_clock::now()
+		auto start_time = std::chrono::system_clock::now();
 		for (int thread = 0; thread < threads; thread++)
 		{
 			start = end + 1;
@@ -161,8 +159,8 @@ int main(int argc, char *argv[])
 		{
 			sieves[thread].join();
 		}
-		duration = std::chrono::system_clock::now() - start_time;
-	}
+		std::chrono::duration<double> duration = std::chrono::system_clock::now() - start_time;
+	// }
 
 	int nr_primes = 0;
 	for (int i = 0; i < max; i++)
